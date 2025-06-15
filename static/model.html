@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seryn - Diabetic Meal Planner</title>
+    <link rel="stylesheet" href="style.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span>Seryn سيرين</span>
+            </div>
+            <p class="tagline">Your AI-powered Diabetic Diet Planning Assistant - Culturally Adapted For Emirati Patients</p>
+        </header>
+
+        <div class="main-content">
+            <!-- form section -->
+            <div id="form-section" class="form-section">                   
+                <form id="patient-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                             <h2 class="form-title">Patient's Health Assessment</h2>
+                                <p class="form-subtitle">Help us create your personalized AI meal plan</p>
+                            <div class="field-group">
+                                <label for="age">Age</label>
+                                <input type="number" id="age" name="Age" min="0" required />
+                            </div>
+
+                            <div class="field-group">
+                                <label for="bmi">BMI</label>
+                                <input type="number" step="0.1" id="bmi" name="BMI" required />
+                            </div>
+
+                            <div class="field-group">
+                                <label for="hba1c">HbA1c (%)</label>
+                                <input type="number" step="0.1" id="hba1c" name="Hba1c" required />
+                            </div>
+
+                            <div class="field-group">
+                                <label for="calories">Calorie Intake per Day</label>
+                                <input type="number" id="calories" name="Calorie Needs" required />
+                            </div>
+
+                            <div class="field-group">
+                                <label for="carbs">Carb Tolerance (grams)</label>
+                                <input type="number" id="carbs" name="Carb Tolerance" required />
+                            </div>
+
+                            <div class="field-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="Gender_Male" required>
+                                    <option value="">select gender</option>
+                                    <option value="1">Male</option>
+                                    <option value="0">Female</option>
+                                </select>
+                            </div>
+
+                            <div class="field-group">
+                                <label>Diabetes Type</label>
+                                <select id="diagnosis" name="Diagnosis">
+                                    <option value="">select type</option>
+                                    <option value="pre">Pre Diabetic</option>
+                                    <option value="type1">Type 1</option>
+                                    <option value="type2">Type 2</option>
+                                </select>
+                            </div>
+
+                            <div class="field-group">
+                                <label>Physical Activity Status</label>
+                                <select id="activity" name="Activity">
+                                    <option value="">select activity</option>
+                                    <option value="low">Low</option>
+                                    <option value="moderate">High</option>
+                                </select>
+                            </div>
+
+                            <div class="field-group">
+                                <label>Sugar Sensitivity</label>
+                                <select id="sensitivity" name="Sugar Sensitivity">
+                                    <option value="">select level</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">High</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">generate my meal plan</button>
+                </form>
+            </div>
+
+            <!-- loading -->
+            <div id="loading-section" class="loading" style="display:none;">
+                <div class="spinner"></div>
+                <p>Creating Your Personalized Meal Plan...</p>
+            </div>
+
+            <!-- meal plan -->
+            <div id="meal-plan-section" class="meal-plan-section" style="display:none;">
+                <button class="back-btn" onclick="showForm()">← Back to Form</button>
+                <div class="meal-plan-header">
+                    <h2 class="week-title" id="week-title">Full Week - Meal Plan</h2>
+                    <p class="week-subtitle">Personalized For Your Dietary Needs</p>
+                </div>
+                <div id="days-container" class="days-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('patient-form');
+        const loadingSection = document.getElementById('loading-section');
+        const mealPlanSection = document.getElementById('meal-plan-section');
+        const formSection = document.getElementById('form-section');
+
+        function showForm() {
+            formSection.style.display = 'block';
+            mealPlanSection.style.display = 'none';
+            loadingSection.style.display = 'none';
+        }
+
+        function generateNextWeek() {
+            // Placeholder for actual functionality
+            alert("Next week's meal plan will be generated soon!");
+            
+
+        }
+
+        form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    formSection.style.display = 'none';
+    loadingSection.style.display = 'block';
+
+    // Prepare features from form
+    const payload = {
+        Age: document.getElementById('age').value,
+        BMI: document.getElementById('bmi').value,
+        Hba1c: document.getElementById('hba1c').value,
+        "Calorie Needs": document.getElementById('calories').value,
+        "Carb Tolerance": document.getElementById('carbs').value,
+        Gender_Male: document.getElementById('gender').value,
+        "Pre Diabetic": document.getElementById('diagnosis').value === 'pre' ? 1 : 0,
+        Type1: document.getElementById('diagnosis').value === 'type1' ? 1 : 0,
+        Type2: document.getElementById('diagnosis').value === 'type2' ? 1 : 0,
+        "Low Activity": document.getElementById('activity').value === 'low' ? 1 : 0,
+        "Moderate Activity": document.getElementById('activity').value === 'moderate' ? 1 : 0,
+        "Low Sugar Sensitivity": document.getElementById('sensitivity').value === 'low' ? 1 : 0,
+        "Medium Sugar Sensitivity": document.getElementById('sensitivity').value === 'medium' ? 1 : 0
+    };
+
+    try {
+        const response = await fetch('/recommend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            loadingSection.style.display = 'none';
+            mealPlanSection.style.display = 'block';
+
+            // Load dish metadata
+            const dishRes = await fetch('output.json');
+            const dishDetailsData = await dishRes.json();
+
+            // Helper to find dish details by name
+            const getDishDetails = (name) => {
+                return dishDetailsData.find(d =>
+                    d["Dish Name"].toLowerCase() === name.toLowerCase()
+                );
+            };
+
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            const mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snacks', 'Drinks'];
+            const container = document.getElementById('days-container');
+            container.innerHTML = '';
+
+            for (let i = 0; i < 7; i++) {
+                const dayCard = document.createElement('div');
+                dayCard.className = 'day-card';
+
+                let mealsHTML = '';
+
+                mealTypes.forEach(type => {
+                    const dishName = data[type][i];
+                    const dish = getDishDetails(dishName);
+
+                    mealsHTML += `
+                        <div class="meal-item">
+                            <div class="meal-header"><span class="meal-type">${type}</span></div>
+                            <div class="meal-name">${dishName}</div>
+                            ${
+                                dish ? `
+                                <div class="meal-details">
+                                    <small>Calories: ${dish["Calories"]}</small><br>
+                                    <small>Carbs: ${dish["Carbs (g)"]}g</small><br>
+                                    <small>Sugar: ${dish["Sugar (g)"]}g</small><br>
+                                    <small>Protein: ${dish["Protein (g)"]}g</small><br>
+                                    <small>Glycemic Index: ${dish["Glycemic Index"]}</small>
+                                </div>
+                                ` : `<div class="meal-details"><small>Details not found</small></div>`
+                            }
+                        </div>
+                    `;
+                });
+
+                dayCard.innerHTML = `
+                    <div class="day-header">${days[i]}</div>
+                    <div class="meals-list">${mealsHTML}</div>
+                `;
+                container.appendChild(dayCard);
+            }
+        } else {
+            throw new Error(data.error || 'An error occurred');
+        }
+
+    } catch (err) {
+        alert(err.message);
+        formSection.style.display = 'block';
+        loadingSection.style.display = 'none';
+        mealPlanSection.style.display = 'none';
+    }
+});
+
+        // Initialize the form section
+        showForm();
+    </script>
+</body>
