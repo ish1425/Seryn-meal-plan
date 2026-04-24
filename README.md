@@ -122,15 +122,15 @@ Files downloaded at runtime:
 
 ## Screenshots
 
-Place project screenshots in `docs/images/` if you want them versioned with the repo.
+### Patient Assessment Form
 
-Suggested filenames:
+![Patient assessment form](docs/images/form-view.png)
 
-- `docs/images/form-view.png`
-- `docs/images/meal-plan-view-1.png`
-- `docs/images/meal-plan-view-2.png`
+### Weekly Meal Plan
 
-Once added, you can reference them here with standard Markdown image links.
+![Weekly meal plan - first view](docs/images/meal-plan-view-1.png)
+
+![Weekly meal plan - second view](docs/images/meal-plan-view-2.png)
 
 
 ## License
