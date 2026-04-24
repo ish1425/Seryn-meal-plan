@@ -1,6 +1,6 @@
 # Seryn Meal Planner
 
-Seryn is a Flask-based web application that generates a personalized 7-day meal plan for diabetic or pre-diabetic users, with meal suggestions adapted to Emirati dietary preferences.
+Seryn is a Flask-based web application that generates a personalized 7-day meal plan for type 2 diabetes people, with meal suggestions adapted to Emirati dietary preferences.
 
 ## Problem Definition
 
